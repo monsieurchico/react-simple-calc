@@ -3,12 +3,23 @@ import React, { Component } from 'react';
 class HistoryList extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            list: []
+        }
     }
+
+    static getDerivedStateFromProps = ({ operation = null, result = null },  { list }) => {
+        console.log({ operation, result })
+        if (operation && result) {
+            list.push({ operation, result })
+        }
+        return { list }
+    }   
 
     createResultsTable = () => {
         const arr = [];
-        const {props: { history: data }} = this;
+
+        const {state: { list: data }} = this;
 
         let index = 100;
         data.map((item) => {

@@ -9,44 +9,49 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      lastOperation: '',
       operation: '',
+      result: null,
       hasError: false,
-      history: []
     }
   }
 
   onKeypadClickHandler = (value) => {
     let setStateCallback = (state) => {
-      const { hasError, operation, history } = state;
+      const { hasError, operation, lastOperation, result } = state;
       
       if ('=' === value) {
         try {
-          const newResult = resolve(operation)
-          history.push({
-            operation: operation,
-            result: newResult
-          })
-          
           return {
             operation: '',
-            history
+            lastOperation: operation,
+            result: resolve(operation),
+            hasError: false,
           }
         } catch (e) {
           return {
             operation: 'Err',
-            history,
-            hasError: true
+            lastOperation,
+            result: null,
+            hasError: true,
           }
         }
       }
 
       if (!hasError) {
-        return { operation: `${operation}${value}` }
+        return { 
+          lastOperation,
+          operation: `${operation}${value}`,
+          result: null,
+          hasError: false,
+        }
       }
       
       return {
+        lastOperation,
+        operation: value,
+        result: null,
         hasError: false,
-        operation: value
       }
     }
 
@@ -57,12 +62,12 @@ class App extends Component {
   }
 
   render() {
-    const { onKeypadClickHandler, state: { hasError, operation, history }} = this
+    const { onKeypadClickHandler, state: { hasError, operation, lastOperation, result }} = this
     return (
       <div>
         <OperationScreen value={operation} className={hasError ? 'has-error': ''} />
         <Keypad onKeyClickCallback={onKeypadClickHandler} />
-        <HistoryList history={history} />
+        <HistoryList result={result} operation={lastOperation} />
       </div>
     );
   }
