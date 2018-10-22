@@ -47,7 +47,7 @@ class Keypad extends Component {
                         <tr>
                             <td><Key onClick={onKeyClick} value="0"/></td>
                             <td><Key onClick={onKeyClick} value="."/></td>
-                            <td><Key onClick={onKeyClick} value="/"/></td>
+                            <td><Key onClick={onKeyClick} value="-"/></td>
                             <td><Key onClick={onKeyClick} value="="/></td>
                         </tr>
                     </tbody>
